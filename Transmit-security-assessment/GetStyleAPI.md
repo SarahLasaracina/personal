@@ -5,7 +5,7 @@ The Transmit SDK GetStyle API enables the customization of the appearance of scr
 
 ## Tags
 
-Both the API query and the JSON stylesheet use tags to identify each UI element. A tag may consist of one or multiple tag items, with each item representing a specific characteristic or feature of the UI element, such as its type, context of use, state, and others. The larger the group of tags is, the more specific both the UI element usage and the corresponding rule's case of application are. The example above shows the possible structure of tags:
+Both the API query and the JSON stylesheet use tags to identify each UI element. A tag may consist of one or multiple tag items, with each item representing a specific characteristic or feature of the UI element, such as its type, context of use, state, and others. The larger the tag set is, the more specific both the UI element usage and the corresponding rule's case of application are. The example above shows the possible structure of tags:
 
 | UI element                       | Tag                              |
 | -------------------------------- | -------------------------------- |
@@ -51,14 +51,15 @@ The JSON stylesheet is stored on the client side and then customizable by the cl
 
 
 ## Query processing
-At query time, the GetStyle API queries the JSON stylesheet with the tags that identify the screen’s UI elements. Then, the SDK scans the JSON stylesheet in a cascade order to find style rules matching the query’s tags. 
+At query time, the GetStyle API queries the JSON stylesheet with the tags that identify the screen’s UI elements. The SDK scans then the JSON stylesheet in cascade order to find style rules matching the query’s tags. As a general rule, the scanning process focuses on searching for applicable style rules that contribute to formatting the UI elements. 
 
-As a general rule, stylesheet scanning involves searching for any applicable style rules that contribute to formatting the UI elements on the screen. 
-In the first phase of processing, the scanning searches for style rule tags that match the query tags. Tags are evaluated as a set. When a matching tag set is found, the corresponding rule applies. 
+As a priority, the scanning searches for style rules whose tag sets match the query tags. When a matching tag set is found, the corresponding rule applies.
 
-In the second stage, to provide as much styling information as possible, the scanning searches for other style rules referencing each query tag set tag item individually. If rules referencing the tag items as single tags are found, and the properties they reference are complementary to the style rule matching as a set, all rules work together to style the UI element. Hence, multiple style rules may participate in styling the same UI element. 
+> Note: a tag set may include either single or multiple tag items. 
 
-In cases where rules conflict at either the tag or property level, the last applicable rule in the stylesheet file takes precedence and overrides the previous ones.
+To ensure complete formatting of the UI elements, the scanning also searches for rules that refer to each tag item in the query tag set. If these rules are found, and their properties complement the main rule, they also contribute to styling the UI element. As a result, multiple style rules may participate in styling the same UI element.
+
+If conflicts arise at either the tag or property level, the last applicable rule in the stylesheet takes precedence and overrides the previous ones.
 
 **Example**
 

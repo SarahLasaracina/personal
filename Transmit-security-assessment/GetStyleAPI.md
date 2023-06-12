@@ -59,7 +59,7 @@ As a priority, the scanning searches for style rules whose tag sets match the qu
 
 To ensure complete formatting of the UI elements, the scanning also searches for rules that refer to each tag item in the query tag set. If these rules are found, and their properties complement the main rule, they also contribute to styling the UI element. As a result, multiple style rules may participate in styling the same UI element.
 
-If conflicts arise at either the tag or property level, the last applicable rule in the stylesheet takes precedence and overrides the previous ones.
+If conflicts arise at either the tag or property level, the last applicable rule in the stylesheet file takes precedence and overrides the previous ones.
 
 **Example**
 

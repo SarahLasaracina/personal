@@ -53,11 +53,12 @@ The JSON stylesheet is stored on the client side and then customizable by the cl
 ## Query processing
 At query time, the GetStyle API queries the JSON stylesheet with the tags that identify the screen’s UI elements. Then, the SDK scans the JSON stylesheet in a cascade order to find style rules matching the query’s tags. 
 
-As a general rule, stylesheet scanning involves searching for any applicable style rules that contribute to formatting the UI elements on the screen. Hence, multiple style rules may participate in styling the same UI element. 
+As a general rule, stylesheet scanning involves searching for any applicable style rules that contribute to formatting the UI elements on the screen. 
+In the first phase of processing, the scanning searches for style rule tags that match the query tags. Tags are evaluated as a set. When a matching tag set is found, the corresponding rule applies. 
 
-If multiple style rules reference the same single tag or any tag item of a tag group but define complementary properties, all rules apply to styling the UI element. 
+In the second stage, to provide as much styling information as possible, the scanning searches for other style rules referencing each query tag set tag item individually. If rules referencing the tag items as single tags are found, and the properties they reference are complementary to the style rule matching as a set, all rules work together to style the UI element. Hence, multiple style rules may participate in styling the same UI element. 
 
-Instead, if multiple applicable style rules refer the same property, the last applicable rule of the stylesheet file overrides the previous ones. 
+In cases where rules conflict at either the tag or property level, the last applicable rule in the stylesheet file takes precedence and overrides the previous ones.
 
 **Example**
 

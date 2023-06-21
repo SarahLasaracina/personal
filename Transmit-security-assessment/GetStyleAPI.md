@@ -5,7 +5,7 @@ The Transmit SDK GetStyle API enables the customization of the appearance of scr
 
 ## Tags
 
-Both the API query and the JSON stylesheet use tags to identify each UI element. A tag may consist of one or multiple tag items, with each item representing a specific characteristic or feature of the UI element, such as its type, context of use, state, and others. The larger the tag set is, the more specific both the UI element usage and the corresponding rule's case of application are. The example above shows the possible structure of tags:
+Both the API query and the JSON stylesheet uses _tags_ to identify each UI element. A tag may consist of a single tag or a group of tags, with each tag representing a specific characteristic or feature of the UI element, such as its type, context of use, state, and others. The larger the tag set is, the more specific both the UI element usage and the corresponding rule's case of application are. The example above shows the possible structure of tags:
 
 | UI element                       | Tag                              |
 | -------------------------------- | -------------------------------- |
@@ -18,17 +18,31 @@ Both the API query and the JSON stylesheet use tags to identify each UI element.
 
 ### Structure
 
-The JSON stylesheet consists of a list of style rules defining for each UI element (`tags` field) the related formatting styles (`properties` field). Each JSON stylesheet also provides predefined formatting styles used as fallback (`values`).
+The JSON stylesheet consists of a collection of _style rules_, and styling _values_. 
+
+_Style rules_ are flexible structures that can be designed to respond to specific contexts of use. The more specific the context to use a style is, the more complex the style rule becomes. For instance, a style rule may target the hover state of a validation button on a specific screen.
+
+Each style rule includes:
+- a _rule_ that identifies UI element types, characteristics, or features using _tags_ (see [`tags` field](#fields)) and thus determines the conditions for its application.
+- a set of _properties_ that either identify formatting styles (see [`properties` field](#fields)), or refer to styling _values_.
+
+_Values_, are a centralized collection of  styling properties intended to be applied by reference and reused in multiple contexts. For example, `values` properties may identify the brand identity colors to be used as the  main color palette for the website's backgrounds, page titles, menu items, an mode. Centralizing formatting styles within the `values` object ensures consistency and easy maintenance of the stylesheet. 
+
 ```
 styles
-    rule
-        tags
+    style
+        rule
+            tags
         properties
-    rule
-        tags
+    style
+        rule
+            tags
         properties
-    …
-values
+    ...
+    values
+        styling property 1
+        styling property 2
+        ...
 ```
 The JSON stylesheet is stored on the client side and then customizable by the client.
 
@@ -36,22 +50,14 @@ The JSON stylesheet is stored on the client side and then customizable by the cl
 
 | Field                | Nested in            | Description                                             | Data type | Mandatory |
 | -------------------- | -------------------- | ------------------------------------------------------- | --------- | --------- |
-| `styles `          | -                   | List of style rules                                     | array     | YES       |
-| `rule`             | `styles `          | Style rule  | object    | YES       |
-| `tags `            | `rule `            | UI element to style                                     | array     | YES       |
-| `properties`       | `rule `            | Formatting properties to style the UI element           | object    | YES       |
-| `backgroundColor ` | `properties `      | Background color property for the UI element            | object    | NO        |
-| `hex `             | `backgroundColor ` | Hexadecimal color value                                 | string    | NO        |
-| `ref `             | `backgroundColor ` | References a predefined value. See values               | string    | NO        |
-| `tintColor `       | `properties `      | Tint color property for the UI element                  | string    | NO        |
-| `imageUrl `        | `properties `      | URL or path to the image file related to the UI element | string    | NO        |
-| `values `          | -                  | List of predefined values used as fallback           | object    | YES       |
-| `primary-color `   | `values `          | Reference of the fallback color for any UI element      | object    | NO        |
-
-
+| `styles `          | -                   | Collection of style rules                                  | array     | YES       |
+| `rule`             | `styles `          | Style rule that defines the condition to apply the rule (see `tags`), and the rule's style properties (see `properties`)  | object    | YES       |
+| `tags `            | `rule `            | Tag that specifies the UI elements to style                                     | array     | YES       |
+| `properties`       | `rule `            | Formatting properties to style the UI elements. It can either specify a CSS formatting property o reference a styling variable (see `values`).          | object    | YES       |
+| `values `          | -                  | Collection of styling variables that can be referenced by the properties of style rules         | object    | YES       |
 
 ## Query processing
-At query time, the GetStyle API queries the JSON stylesheet with the tags that identify the screen’s UI elements. The SDK scans then the JSON stylesheet in cascade order to find style rules matching the query’s tags. As a general rule, the scanning process focuses on searching for applicable style rules that contribute to formatting the UI elements. 
+At query time, the GetStyle API queries the JSON stylesheet with the tags that identify the screen’s UI elements. The SDK scans then the JSON stylesheet in cascade order to find style rules that contribute to formatting the UI elements. 
 
 As a priority, the scanning searches for style rules whose tag sets match the query tags. When a matching tag set is found, the corresponding rule applies.
 

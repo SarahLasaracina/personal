@@ -24,9 +24,9 @@ _Style rules_ are flexible structures that can be designed to respond to specifi
 
 Each style rule includes:
 - a _rule_ that identifies UI element types, characteristics, or features using _tags_ (see [`tags` field](#fields)) and thus determines the conditions for its application.
-- a set of _properties_ that either identify formatting styles (see [`properties` field](#fields)) or refer to styling _values_.
+- a set of _properties_ that either identify formatting styles (see [`properties` field](#fields)) or refer to styling properties from the _values_ collection.
 
-_Values_, are a centralized collection of styling properties intended to be applied by reference and reused in multiple contexts. For example, `values` properties may identify the brand identity colors to be used as the main color palette for the website's backgrounds, page titles, menu items, and more. Centralizing formatting styles within the `values` object ensures consistency and easy maintenance of the stylesheet. 
+The "Values" object is a centralized collection of styling properties that can be referenced by the rules instead of being duplicated, enabling their reuse across multiple contexts. For example, `values` properties may identify the brand identity colors to be used as the main color palette for the website's backgrounds, page titles, menu items, and more. Centralizing formatting styles within the `values` object ensures consistency and easy maintenance of the stylesheet. 
 
 ```
 styles

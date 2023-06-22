@@ -26,7 +26,7 @@ Each style rule includes:
 - a _rule_ that identifies UI element types, characteristics, or features using _tags_ (see [`tags` field](#fields)) and thus determines the conditions for its application.
 - a set of _properties_ that either identify formatting styles (see [`properties` field](#fields)), or refer to styling _values_.
 
-_Values_, are a centralized collection of  styling properties intended to be applied by reference and reused in multiple contexts. For example, `values` properties may identify the brand identity colors to be used as the  main color palette for the website's backgrounds, page titles, menu items, an mode. Centralizing formatting styles within the `values` object ensures consistency and easy maintenance of the stylesheet. 
+_Values_, are a centralized collection of  styling properties intended to be applied by reference and reused in multiple contexts. For example, `values` properties may identify the brand identity colors to be used as the  main color palette for the website's backgrounds, page titles, menu items, and more. Centralizing formatting styles within the `values` object ensures consistency and easy maintenance of the stylesheet. 
 
 ```
 styles
@@ -57,23 +57,62 @@ The JSON stylesheet is stored on the client side and then customizable by the cl
 | `values `          | -                  | Collection of styling variables that can be referenced by the properties of style rules         | object    | YES       |
 
 ## Query processing
-At query time, the GetStyle API queries the JSON stylesheet with the tags that identify the screen’s UI elements. The SDK scans then the JSON stylesheet in cascade order to find style rules that contribute to formatting the UI elements. 
+At query time, the GetStyle API queries the JSON stylesheet with the tags that identify the screen’s UI elements. The SDK scans then the JSON stylesheet in cascade order to find style rules that contribute to formatting the UI elements.
 
-The scanning searches for style rules whose tag sets match both partially or totally the query tags. More complex tag sets are ignored.
+<!--The applicability of style rules is evaluated based on [tag matching criterion](#tag-matching-criterion). 
+The application of style rule's properties is based on the [properties' complementarity criterion](#properties-complementarity-criteria) insted.
+-->
+
+For each UI element, multiple style rules may apply if they both fullfill the tag matching criterion and provide complementary properties. 
+### Tag matching
+The criterion to evaluate the applicability of a style rule, consists in searching for **style rules whose tag matches either partially or totally the query tag**. More complex tag sets are ignored, as they refer to more specific UI elements.
+
+---
+**Example** 
+
+In the following table, "A, B, C" are symbolic placeholders for tags.
+
+| Query tag | Style rule tag | Matching |
+|-----------|----------------|----------|
+| `[A, B, C]` | `[A]` | YES |
+| `[A, B, C]` | `[B]` | YES |
+| `[A, B, C]` | `[A, B]` | YES |
+| `[A, B, C]` | `[B, C]` | YES |
+| `[A, B, C]` | `[A, B, C]` | YES |
+| `[A, B, C]` | `[A, B, C, D]` | NO |
+
+----
+When a matching tag is found, the corresponding rule is applicable.
+
+### Properties application
+
+To ensure complete formatting of the UI elements, all properties of applicable rules are applied. If multiple rules qualify the same property, the last applicable rule in the stylesheet file takes precedence and overrides the previous ones.
+
+----
+**Example** 
+
+In the following table, "A, B, C" are symbolic placeholders for tags and "1, 2, 3" are symbolic placeholders for properties.
+
+| Query tag | Style rule | Query tag properties  |
+|-----------|----------------|-----------------------| 
+| `[A, B, C]` | `[A]` | `[1, 2]` |
+| `[A, B, C]` | `[A, B]` | `[3, 4]` |
+| `[A, B, C]` |`[B, C]` | `[5, 6]` |
+| `[A, B, C]` | `[A, B, C]` | `[5, 6, 7]` |
+
+The properties displayed at runtime are `1`, `2`, `3`, `4`, `5`, `6`, and `7`. Although properties `6` and `7` are qualified both by `[A, B, C]` and `[A, B, C]` style rules, `[A, B, C]`'s properties override `[B, C]`'s, as they're the last ones referenced in the sylesheet.
+
+----
+
+> Important: if style rules refer to styling properties from the `values` collection, the
 
 
- When a matching tag set is found, the corresponding rule applies.
-
-To ensure complete formatting of the UI elements, the scanning also searches for rules that refer to each tag item in the query tag set. If these rules are found, and their properties complement the main rule, they also contribute to styling the UI element. As a result, multiple style rules may participate in styling the same UI element.
-
-If conflicts arise at either the tag or property level, the last applicable rule in the stylesheet file takes precedence and overrides the previous ones.
-
-**Example**
+## Real life example
 
 In the JSON stylesheet above, for an API query referencing the `["list-item", "hover"]` tag group, multiple style rules apply.
 
-- Second rule’s `tags` items match both tag items in the query, and it qualifies the `BackgroundColor` property.
-- First rule’s`tags` item matches the `"list-item"` tag item, and it qualifies the `tintColor` property.
+- First rule’s `tags` field  matches the `"list-item"` tag, and it qualifies the `tintColor` property.
+- Second rule’s `tags` field matches the query tag and qualifies the `BackgroundColor` property.
 
 Since both properties qualify the `"list-item"` tag item, both rules are applied. Note that although both styles reference the `BackgroundColor` property, the BackgroundColor style of the second rule takes precedence because it is the last one referenced in the stylesheet.
 

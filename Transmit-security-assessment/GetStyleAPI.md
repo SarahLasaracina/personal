@@ -59,16 +59,14 @@ The JSON stylesheet is stored on the client side and then customizable by the cl
 ## Query processing
 At query time, the GetStyle API queries the JSON stylesheet with the tags that identify the screen’s UI elements. The SDK then scans the JSON stylesheet in cascade order to find style rules that contribute to formatting the UI elements.
 
-The applicability of style rules is evaluated based on tag matching criteria. 
-
-For each UI element, multiple style rules may apply if they provide either unique or complementary properties.
+The applicability of style rules is evaluated based on tag-matching criteria. Multiple style rules may apply to each UI element if they provide either unique or complementary properties.
 
 ### Tag matching criterion
-The criterion used to evaluate the applicability of a style rule consists of searching for style rules whose tags partially or fully match the query tag. 
+The criterion used to evaluate the applicability of a style rule consists of searching for style rules whose tags partially or fully match the query tag.
 
-More complex tag sets, which refer to more specific UI elements, are ignored. 
+More complex tag sets, which refer to more specific UI elements, are ignored.
 
-When a matching tag is found, the corresponding rule is applicable.
+When matching tags are found, the corresponding rules apply.
 
 **Example** 
 In the following table, "A, B, C" are symbolic placeholders for tags.
@@ -107,12 +105,12 @@ Although properties `6` and `7` are qualified by both `[A, B, C]` and `[A, B, C]
 ## In-context example
 
 In the JSON stylesheet above, for an API query referencing the `["list-item", "hover"]` tag, multiple style rules apply:
-- First rule applies as its `"list-item"` tag matches the query tag partially.
-- Second rule applies as its `["list-item", "hover"]` tag matches the query tag totally.
+- the first rule applies as its `"list-item"` tag matches the query tag partially.
+- the second rule applies as its `["list-item", "hover"]` tag matches the query tag totally.
 
 As both styles reference the `BackgroundColor` property, the BackgroundColor style of the second rule takes precedence because it is the last one referenced in the stylesheet. 
 
-As a result, the properties on screen are:
+As a result, the applied properties are:
 - First rule's `tintColor`
 - Second rule's `BackgroundColor` (note that the property refers to the `primary-color` from the In this example, the `values` collection)
 

@@ -20,13 +20,13 @@ Both the API query and the JSON stylesheet use _tags_ to identify each UI elemen
 
 The JSON stylesheet consists of a collection of _style rules_, and styling _values_. 
 
-_Style rules_ are flexible structures that can be designed to respond to specific contexts of use. The more specific the context to use a style is, the more complex the style rule becomes. For instance, a style rule may target the hover state of a validation button on a specific screen.
+_Style rules_ are flexible structures that can be designed to respond to specific contexts of use. The more specific the style's context of use, the more complex the style rule becomes. For example, a rule targeting general validation buttons has a lighter structure compared to a rule targeting the hover state of a validation button on a specific screen.
 
 Each style rule includes:
-- a _rule_ that identifies UI element types, characteristics, or features using _tags_ (see [`tags` field](#fields)) and thus determines the conditions for its application.
-- a set of _properties_ that either identify formatting styles (see [`properties` field](#fields)) or refer to styling properties from the _values_ collection.
+- a _rule_ that identifies UI element using _tags_  and thus determines the condition for its application (see [`tags` field](#fields)).
+- a collection of _properties_ that either identify formatting styles (see [`properties` field](#fields)) or refer to styling values from the `values` collection.
 
-The `Values` object contains a centralized collection of styling values that can be referenced by the rule properties instead of being duplicated, enabling their reuse across multiple contexts. For example, `values`  may identify the brand identity colors to be used as the main color palette for the website's backgrounds, page titles, menu items, and more. Centralizing values within the `values` object ensures consistency and easy maintenance of the stylesheet. 
+The `values` collection contralizes styling values that can be referenced by the style rule properties instead of being duplicated, enabling their reuse across multiple contexts and easy maintenance of the stylesheet. For example, the company's brand colors, which are expected to be used across the entire website, can be centralized in the `values` object and referenced by style rules whenever necessary instead of being specified multiple times.
 
 ```
 styles
@@ -51,10 +51,10 @@ The JSON stylesheet is stored on the client side and then customizable by the cl
 | Field                | Nested in            | Description                                             | Data type | Mandatory |
 | -------------------- | -------------------- | ------------------------------------------------------- | --------- | --------- |
 | `styles `          | -                   | Collection of style rules                                  | array     | YES       |
-| `rule`             | `styles `          | Style rule that defines the condition to apply the rule (see `tags`), and the rule's style properties (see `properties`)  | object    | YES       |
-| `tags `            | `rule `            | Tag that specifies the UI elements to style                                     | array     | YES       |
-| `properties`       | `rule `            | Formatting properties to style the UI elements. It can either specify a CSS formatting property o reference a styling variable (see `values`).          | object    | YES       |
-| `values `          | -                  | Styling values that can be referenced by the style rule properties         | object    | YES       |
+| `rule`             | `styles `          | Style rule that includes the conditions (`tags`) and the formatting properties (`properties`) that determine when and how the rule is applied.  | object    | YES       |
+| `tags `            | `rule `            | Tag set that identifies the UI element's characteristics and features to style.                                   | array     | YES       |
+| `properties`       | `rule `            | List of properties to style the UI elements. Each property can either specify a CSS-based property, or reference a styling value (see `values`).          | object    | YES       |
+| `values `          | -                  | Styling values that can be referenced by the style rule properties.         | object    | YES       |
 
 ## Query processing
 At query time, the GetStyle API queries the JSON stylesheet with the tags that identify the screen’s UI elements. The SDK then scans the JSON stylesheet in cascade order to find style rules that contribute to formatting the UI elements.
@@ -83,7 +83,7 @@ In the following table, "A, B, C" are symbolic placeholders for tags.
 
 ### Property application
 
-To ensure complete formatting of the UI elements, all properties of applicable rules apply. If multiple rules qualify the same property, the properties from the last applicable rule in the stylesheet file take precedence and override the previous ones.
+To ensure complete formatting of the UI elements, all properties of applicable rules apply to formatting the UI element. If multiple rules qualify the same property, the properties from the last applicable rule in the stylesheet file take precedence and override the previous ones.
 
 The same criterion applies to style rules whose properties refer to styling values from the `values` collection.
 

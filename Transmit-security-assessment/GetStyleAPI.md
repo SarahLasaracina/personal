@@ -109,7 +109,7 @@ In the JSON stylesheet above, for an API query referencing the `[list-item, hove
 As both styles reference the `BackgroundColor` property, the BackgroundColor style of the second rule takes precedence because it is the last one referenced in the stylesheet. 
 
 As a result, the applied properties are:
-- First rule's `tintColor`
-- Second rule's `BackgroundColor` (note that the property refers to the `primary-color` value from the `values` collection)
+- first rule's `tintColor`
+- second rule's `BackgroundColor` (note that the property refers to the `primary-color` value from the `values` collection)
 
 ![stylehsheet img](stylesheetexample.JPG)

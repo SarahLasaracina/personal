@@ -104,7 +104,7 @@ Although properties `5` and `6` are qualified by both `[B, C]` and `[A, B, C]` s
 
 ## In-context example
 
-In the JSON stylesheet above, for an API query referencing the `[list-item, hover]` tag set, both the first and second rules apply, as both tag sets are contained in the query tag set.
+In the JSON stylesheet above, for an API query referencing the `[list-item, hover]` tag set, both the first and second rules apply, as both rules' tag sets are contained in the query tag set.
 
 As both styles reference the `BackgroundColor` property, the BackgroundColor style of the second rule takes precedence because it is the last one referenced in the stylesheet. 
 

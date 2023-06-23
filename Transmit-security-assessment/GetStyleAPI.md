@@ -98,7 +98,8 @@ In the following table "A, B, C" are symbolic placeholders for tags, and "1, 2, 
 | `[A, B, C]` | `[B, C]` | `[5, 6]` |
 | `[A, B, C]` | `[A, B, C]` | `[5, 6, 7]` |
 
-The properties displayed at runtime are `1`, `2`, `3`, `4`, `5`, `6`, and `7`. 
+All the style rules in the example apply. The properties displayed at runtime are `1`, `2`, `3`, `4`, `5`, `6`, and `7`. 
+
 Although properties `5` and `6` are qualified by both `[B, C]` and `[A, B, C]` style rules, `[A, B, C]`'s properties override `[B, C]`'s, as they are the last ones referenced in the stylesheet.
 
 ## In-context example

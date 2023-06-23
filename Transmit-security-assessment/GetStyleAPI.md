@@ -26,7 +26,7 @@ Each style rule includes:
 - a _rule_ that identifies UI element using _tags_  and thus determines the condition for its application (see [`tags` field](#fields)).
 - a collection of _properties_ that either identify formatting styles (see [`properties` field](#fields)) or refer to styling values from the `values` collection.
 
-The `values` collection contralizes styling values that can be referenced by the style rule properties instead of being duplicated, enabling their reuse across multiple contexts and easy maintenance of the stylesheet. For example, the company's brand colors, which are expected to be used across the entire website, can be centralized in the `values` object and referenced by style rules whenever necessary instead of being specified multiple times.
+The `values` collection contralizes styling values that can be referenced by style rule properties, avoiding duplication. This enables their reuse across various contexts and simplifies stylesheet maintenance. For example the company's brand colors can be centralized in the `values` object, as they are expected to be used throughout the website, and tyle rules can then reference them whenever needed.
 
 ```
 styles
